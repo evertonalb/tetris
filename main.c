@@ -7,7 +7,10 @@ int SDL_main(int argc, char *args[]){
 	// Window
     const int width = 1000;
     const int height = 800;
-    SDL_Window *win = SDL_CreateWindow("Tetris", width, height, SDL_WINDOW_MAXIMIZED);
+    SDL_Window *win = SDL_CreateWindow("Tetris", width, height, SDL_WINDOW_MAXIMIZED);	
+
+	// Renderer
+	SDL_Renderer *renderer = SDL_CreateRenderer(win, NULL);
 
 	SDL_Event event;
 	bool running = true;
@@ -27,6 +30,13 @@ int SDL_main(int argc, char *args[]){
 				break;
 			}
 		}
+
+		// Drawing
+		SDL_RenderClear(renderer);
+
+		/* Drawing functions go here... */
+
+		SDL_RenderPresent(renderer);
 	}
 
 	return 0;
