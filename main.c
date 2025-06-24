@@ -5,8 +5,8 @@ int SDL_main(int argc, char *args[]){
 	SDL_Init(SDL_INIT_VIDEO);
 	
 	// Window
-    const int width = 800;
-    const int height = 600;
+    const int width = 1000;
+    const int height = 800;
     SDL_Window *win = SDL_CreateWindow("Tetris", width, height, SDL_WINDOW_MAXIMIZED);
 
 	SDL_Event event;
