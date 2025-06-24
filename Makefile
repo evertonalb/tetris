@@ -9,7 +9,7 @@ ${EXEC}: main.o func.o
 main.o: main.c
 	${COMPILE} main.c -c -o main.o
 
-func.o: func.c
+func.o: func.c func.h
 	${COMPILE} func.c -c -o func.o
 
 clean:
