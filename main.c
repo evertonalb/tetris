@@ -15,9 +15,14 @@ int SDL_main(int argc, char *args[]){
 		// Event handling
 		while (SDL_PollEvent(&event)){
 			switch (event.type){
+			case SDL_EVENT_KEY_DOWN:
+				if (event.key.key == SDLK_ESCAPE){
+					running = false;
+				}
+				break;
 			case SDL_EVENT_QUIT:
 				running = false;
-				break;
+				break;	
 			default:
 				break;
 			}
