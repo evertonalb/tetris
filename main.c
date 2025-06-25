@@ -1,10 +1,12 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include "func.h"
 
 int SDL_main(int argc, char *args[]){
 	SDL_Init(SDL_INIT_VIDEO);
 	
 	// Window
+	const int margin = 50;
     const int width = 1000;
     const int height = 800;
     SDL_Window *win = SDL_CreateWindow("Tetris", width, height, SDL_WINDOW_MAXIMIZED);	
@@ -12,6 +14,11 @@ int SDL_main(int argc, char *args[]){
 	// Renderer
 	SDL_Renderer *renderer = SDL_CreateRenderer(win, NULL);
 
+	// Grid
+	/* Add settings for grid here... */
+	
+
+	// Game loop
 	SDL_Event event;
 	bool running = true;
 	while (running){
