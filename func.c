@@ -11,6 +11,13 @@ void polygon_init(Polygon *poly, int n){
 	poly->vertices = (SDL_Vertex *) malloc(sizeof(SDL_Vertex));
 	poly->indices  = (int *) malloc(sizeof(int) * poly->numIndices);
 
+	int vertex = 1;
+	for (int i = 0; i < poly->numIndices; i += 3){
+		poly->indices[i] 	= 0;
+		poly->indices[i+1]	= vertex;
+		poly->indices[i+2]	= ++vertex;
+	}
+
 }
 
 void polygon_destroy(Polygon *poly){
