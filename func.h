@@ -7,6 +7,6 @@ typedef struct {
 	int *indices;
 } Polygon;
 
-void polygon_init(Polygon *poly);
+void polygon_init(Polygon *poly, int n);
 
 void polygon_destroy(Polygon *poly);
