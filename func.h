@@ -48,3 +48,5 @@ float grid_init(int rows, int cols, SDL_FPoint *grid[rows+1], SDL_FPoint topLeft
 void grid_destroy(int rows, SDL_FPoint *grid[rows + 1]);
 
 void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *renderer);
+
+void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL_Renderer *renderer, SDL_FColor color);

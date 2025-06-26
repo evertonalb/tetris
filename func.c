@@ -55,3 +55,27 @@ void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *ren
 	for (int i = 0; i <= rows; i++) draw_line(renderer, grid[i][0], grid[i][cols]); // horizontal lines
 	for (int j = 0; j <= cols; j++) draw_line(renderer, grid[0][j], grid[rows][j]); // vertical lines
 }
+
+void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL_Renderer *renderer, SDL_FColor color){
+	SDL_Vertex vertices[4];
+
+	SDL_FColor white = {1, 1, 1, 1};
+
+	vertices[0].color = color;
+	vertices[1].color = color;
+	vertices[2].color = color;
+	vertices[3].color = color;
+
+	vertices[0].position = grid[i][j];
+	vertices[1].position = grid[i+1][j];
+	vertices[2].position = grid[i+1][j+1];
+	vertices[3].position = grid[i][j+1];
+
+
+	int indices[] = {
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	SDL_RenderGeometry(renderer, NULL, vertices, 4, indices, 6);
+}
