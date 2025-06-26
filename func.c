@@ -1,6 +1,8 @@
 #include "func.h"
 #include <stdlib.h>
 
+void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end){ SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
+
 // Polygon
 void polygon_init(Polygon *poly, int n){
 	poly = (Polygon *) malloc(sizeof(Polygon));

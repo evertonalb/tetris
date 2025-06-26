@@ -1,5 +1,8 @@
 #include <SDL3/SDL.h>
 
+// Draws a line
+void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);
+
 // Polygon
 typedef struct {
 	int numVertices, numIndices;
