@@ -1,5 +1,16 @@
 #include <SDL3/SDL.h>
 
+// Tetromino
+typedef enum {
+	O_TETROMINO,
+	I_TETROMINO,
+	S_TETROMINO,
+	Z_TETROMINO,
+	L_TETROMINO,
+	J_TETROMINO,
+	T_TETROMINO
+} TetrominoType;
+
 // Draws a line
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);
 
