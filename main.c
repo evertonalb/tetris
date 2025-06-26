@@ -41,8 +41,11 @@ int SDL_main(int argc, char *args[]){
 		}
 
 		// Drawing
+		
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // set background color to black
 		SDL_RenderClear(renderer);
-
+		
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // set drawing color to white
 		grid_draw(20, 10, mainGrid, renderer);
 
 		SDL_RenderPresent(renderer);
