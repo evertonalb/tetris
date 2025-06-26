@@ -25,3 +25,24 @@ void polygon_destroy(Polygon *poly){
 	free(poly->indices);
 	free(poly);
 }
+
+// Grid
+float grid_init(int rows, int cols, SDL_FPoint *grid[rows+1], SDL_FPoint topLeft, SDL_FPoint botLeft){
+	float height = botLeft.y - topLeft.y;
+	float cellSize = height / rows;
+
+	SDL_FPoint pos = topLeft;
+	// Column loop
+	for (int i = 0; i <= rows; i++){
+		grid[i] = (SDL_FPoint *) malloc(sizeof(SDL_FPoint) * (cols+1));
+		// Row loop
+		for (int j = 0; j <= cols; j++){
+			grid[i][j] = pos;
+			pos.x += cellSize;			
+		}
+		pos.x = topLeft.x;
+		pos.y += cellSize;			
+	}
+
+	return cellSize;
+}

@@ -15,8 +15,10 @@ int SDL_main(int argc, char *args[]){
 	SDL_Renderer *renderer = SDL_CreateRenderer(win, NULL);
 
 	// Grid
-	/* Add settings for grid here... */
-	
+	SDL_FPoint *mainGrid[21];
+	SDL_FPoint topLeft = {margin, margin};
+	SDL_FPoint botLeft = {margin, height - margin};
+	float cellSize = grid_init(20, 10, mainGrid, topLeft, botLeft);
 
 	// Game loop
 	SDL_Event event;
