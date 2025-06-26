@@ -1,1 +1,57 @@
-#include <SDL3/SDL.h>
+#include "func.h"
+#include <stdlib.h>
+
+void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end){ SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
+
+// Polygon
+void polygon_init(Polygon *poly, int n){
+	poly = (Polygon *) malloc(sizeof(Polygon));
+
+	poly->numVertices = n;
+	poly->numIndices  = (n - 2) * 3;
+
+	poly->vertices = (SDL_Vertex *) malloc(sizeof(SDL_Vertex));
+	poly->indices  = (int *) malloc(sizeof(int) * poly->numIndices);
+
+	int vertex = 1;
+	for (int i = 0; i < poly->numIndices; i += 3){
+		poly->indices[i] 	= 0;
+		poly->indices[i+1]	= vertex;
+		poly->indices[i+2]	= ++vertex;
+	}
+
+}
+
+void polygon_destroy(Polygon *poly){
+	free(poly->vertices);
+	free(poly->indices);
+	free(poly);
+}
+
+// Grid
+float grid_init(int rows, int cols, SDL_FPoint *grid[rows+1], SDL_FPoint topLeft, SDL_FPoint botLeft){
+	float height = botLeft.y - topLeft.y;
+	float cellSize = height / rows;
+
+	SDL_FPoint pos = topLeft;
+	// Column loop
+	for (int i = 0; i <= rows; i++){
+		grid[i] = (SDL_FPoint *) malloc(sizeof(SDL_FPoint) * (cols+1));
+		// Row loop
+		for (int j = 0; j <= cols; j++){
+			grid[i][j] = pos;
+			pos.x += cellSize;			
+		}
+		pos.x = topLeft.x;
+		pos.y += cellSize;			
+	}
+
+	return cellSize;
+}
+
+void grid_destroy(int rows, SDL_FPoint *grid[rows + 1]){ for (int i = 0; i <= rows; i++) SDL_free(grid[i]); }
+
+void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *renderer){
+	for (int i = 0; i <= rows; i++) draw_line(renderer, grid[i][0], grid[i][cols]);
+	for (int j = 0; j <= cols; j++) draw_line(renderer, grid[0][j], grid[rows][j]);
+}
