@@ -6,14 +6,25 @@ typedef struct {
 
 // Tetromino
 typedef enum {
+	// One configuration
 	O_TETROMINO,
+	// Two rotations
 	I_TETROMINO,
 	S_TETROMINO,
 	Z_TETROMINO,
+	// Four rotations
 	L_TETROMINO,
 	J_TETROMINO,
 	T_TETROMINO
 } TetrominoType;
+
+typedef struct {
+	TetrominoType type;
+	SDL_FPoint position;
+	SDL_Color color;
+	unsigned short int currentRotation;
+	Cell rotations[4][4];
+} Tetromino;
 
 // Draws a line
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);
