@@ -1,5 +1,9 @@
 #include <SDL3/SDL.h>
 
+typedef struct {
+	int i, j;
+} Cell;
+
 // Tetromino
 typedef enum {
 	O_TETROMINO,
