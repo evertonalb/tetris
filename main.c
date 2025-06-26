@@ -48,5 +48,7 @@ int SDL_main(int argc, char *args[]){
 		SDL_RenderPresent(renderer);
 	}
 
+	grid_destroy(20, mainGrid);
+
 	return 0;
 }

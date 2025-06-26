@@ -46,3 +46,5 @@ float grid_init(int rows, int cols, SDL_FPoint *grid[rows+1], SDL_FPoint topLeft
 
 	return cellSize;
 }
+
+void grid_destroy(int rows, SDL_FPoint *grid[rows + 1]){ for (int i = 0; i <= rows; i++) SDL_free(grid[i]); }
