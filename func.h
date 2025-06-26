@@ -20,3 +20,5 @@ void polygon_destroy(Polygon *poly);
 float grid_init(int rows, int cols, SDL_FPoint *grid[rows+1], SDL_FPoint topLeft, SDL_FPoint botLeft);
 
 void grid_destroy(int rows, SDL_FPoint *grid[rows + 1]);
+
+void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *renderer);

@@ -43,7 +43,7 @@ int SDL_main(int argc, char *args[]){
 		// Drawing
 		SDL_RenderClear(renderer);
 
-		/* Drawing functions go here... */
+		grid_draw(20, 10, mainGrid, renderer);
 
 		SDL_RenderPresent(renderer);
 	}

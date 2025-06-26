@@ -50,3 +50,8 @@ float grid_init(int rows, int cols, SDL_FPoint *grid[rows+1], SDL_FPoint topLeft
 }
 
 void grid_destroy(int rows, SDL_FPoint *grid[rows + 1]){ for (int i = 0; i <= rows; i++) SDL_free(grid[i]); }
+
+void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *renderer){
+	for (int i = 0; i <= rows; i++) draw_line(renderer, grid[i][0], grid[i][cols]);
+	for (int j = 0; j <= cols; j++) draw_line(renderer, grid[0][j], grid[rows][j]);
+}
