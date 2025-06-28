@@ -4,6 +4,8 @@ typedef struct {
 	int i, j;
 } Cell;
 
+Cell new_cell(int i, int j);
+
 // Tetromino
 typedef enum {
 	// One configuration

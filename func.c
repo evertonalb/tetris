@@ -1,7 +1,12 @@
 #include "func.h"
 #include <stdlib.h>
 
-void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end){ SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
+Cell new_cell(int i, int j){
+	Cell c = {i, j};
+	return c;
+}
+
+void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end) { SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
 
 // Polygon
 void polygon_init(Polygon *poly, int n){
