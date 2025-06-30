@@ -92,6 +92,12 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 	return tetromino;
 }
 
+bool is_cell_within_bounds(int rows, int cols, Cell cell){
+	int rowIsContained = (cell.i < rows && cell.i >= 0);
+	int colIsContained = (cell.j < cols && cell.i >= 0);
+	return (rowIsContained && colIsContained);
+}
+
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]){
 	for (int i = 0; i < 4; i++){
 		Cell cur = tetromino.cells[i];

@@ -1,3 +1,6 @@
+#ifndef FUNC_H
+#define FUNC_H
+
 #include <SDL3/SDL.h>
 
 typedef struct {
@@ -31,6 +34,8 @@ typedef struct {
 
 Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
 
+bool is_cell_within_bounds(int rows, int cols, Cell cell);
+
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]);
 
 // Draws a line
@@ -57,3 +62,5 @@ void grid_destroy(int rows, SDL_FPoint *grid[rows + 1]);
 void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *renderer);
 
 void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL_Renderer *renderer, SDL_FColor color);
+
+#endif // FUNC_H
