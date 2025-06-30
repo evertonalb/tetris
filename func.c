@@ -8,6 +8,92 @@ Cell new_cell(int i, int j){
 
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end) { SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
 
+Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
+	Tetromino tetromino;
+
+	switch (type){
+	case O_TETROMINO:
+		tetromino.type = O_TETROMINO;
+
+		tetromino.cells[0] = new_cell(0, 0);
+		tetromino.cells[1] = new_cell(0, 1);
+		tetromino.cells[2] = new_cell(1, 0);
+		tetromino.cells[3] = new_cell(1, 1);
+
+		tetromino.maxRotations = 0;
+
+		break;
+	case I_TETROMINO:
+		tetromino.type = I_TETROMINO;
+
+		tetromino.cells[0] = new_cell(2, 0);
+		tetromino.cells[1] = new_cell(0, 0);
+		tetromino.cells[2] = new_cell(1, 0);
+		tetromino.cells[3] = new_cell(3, 0);
+
+		tetromino.maxRotations = 2;
+
+		break;
+	case S_TETROMINO:
+		tetromino.type = S_TETROMINO;
+
+		tetromino.cells[0] = new_cell(0, 1);
+		tetromino.cells[1] = new_cell(0, 2);
+		tetromino.cells[2] = new_cell(1, 0);
+		tetromino.cells[3] = new_cell(1, 1);
+
+		tetromino.maxRotations = 2;
+
+		break;
+	case Z_TETROMINO:
+		tetromino.type = Z_TETROMINO;
+
+		tetromino.cells[0] = new_cell(0, 0);
+		tetromino.cells[1] = new_cell(0, 1);
+		tetromino.cells[2] = new_cell(1, 1);
+		tetromino.cells[3] = new_cell(1, 2);
+
+		tetromino.maxRotations = 2;
+
+		break;
+	case L_TETROMINO:
+		tetromino.type = L_TETROMINO;
+		tetromino.cells[0] = new_cell(0, 0);
+		tetromino.cells[1] = new_cell(1, 0);
+		tetromino.cells[2] = new_cell(2, 0);
+		tetromino.cells[3] = new_cell(2, 1);
+
+		tetromino.maxRotations = 4;
+
+		break;
+	case J_TETROMINO:
+		tetromino.type = J_TETROMINO;
+		tetromino.cells[0] = new_cell(0, 1);
+		tetromino.cells[1] = new_cell(1, 1);
+		tetromino.cells[2] = new_cell(2, 1);
+		tetromino.cells[3] = new_cell(2, 0);
+
+		tetromino.maxRotations = 4;
+
+		break;
+	case T_TETROMINO:
+		tetromino.type = T_TETROMINO;
+		tetromino.cells[0] = new_cell(0, 0);
+		tetromino.cells[1] = new_cell(0, 1);
+		tetromino.cells[2] = new_cell(0, 2);
+		tetromino.cells[3] = new_cell(1, 1);
+
+		tetromino.maxRotations = 4;
+
+		break;
+	}
+
+	tetromino.currentRotation = 0;
+	tetromino.color = color;
+
+	return tetromino;
+}
+
 // Polygon
 void polygon_init(Polygon *poly, int n){
 	poly = (Polygon *) malloc(sizeof(Polygon));

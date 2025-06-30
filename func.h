@@ -22,14 +22,17 @@ typedef enum {
 
 typedef struct {
 	TetrominoType type;
-	SDL_FPoint position;
-	SDL_Color color;
+	SDL_FColor color;
 	unsigned short int currentRotation;
-	Cell rotations[4][4];
+	unsigned short int maxRotations;
+	Cell cells[4];
+	Cell rotationReference;
 } Tetromino;
 
 // Draws a line
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);
+
+Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
 
 // Polygon
 typedef struct {
