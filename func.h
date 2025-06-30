@@ -29,10 +29,12 @@ typedef struct {
 	Cell rotationReference;
 } Tetromino;
 
+Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
+
+void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]);
+
 // Draws a line
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);
-
-Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
 
 // Polygon
 typedef struct {

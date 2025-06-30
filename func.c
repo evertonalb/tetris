@@ -6,8 +6,6 @@ Cell new_cell(int i, int j){
 	return c;
 }
 
-void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end) { SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
-
 Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 	Tetromino tetromino;
 
@@ -94,13 +92,22 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 	return tetromino;
 }
 
+void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]){
+	for (int i = 0; i < 4; i++){
+		Cell cur = tetromino.cells[i];
+		fill_cell(rows, cols, grid, cur.i, cur.j, renderer, tetromino.color);
+	}
+}
+
+void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end) { SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
+
 // Polygon
 void polygon_init(Polygon *poly, int n){
 	poly = (Polygon *) malloc(sizeof(Polygon));
-
+	
 	poly->numVertices = n;
 	poly->numIndices  = (n - 2) * 3;
-
+	
 	poly->vertices = (SDL_Vertex *) malloc(sizeof(SDL_Vertex));
 	poly->indices  = (int *) malloc(sizeof(int) * poly->numIndices);
 
