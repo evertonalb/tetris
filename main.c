@@ -18,7 +18,8 @@ int SDL_main(int argc, char *args[]){
 	SDL_FPoint *mainGrid[21];
 	SDL_FPoint topLeft = {margin, margin};
 	SDL_FPoint botLeft = {margin, height - margin};
-	float cellSize = grid_init(20, 10, mainGrid, topLeft, botLeft);
+	const int ROWS = 20, COLS = 10;
+	float cellSize = grid_init(ROWS, COLS, mainGrid, topLeft, botLeft);
 
 	// Time
 	SDL_Time time, lastTime, delta;
@@ -51,14 +52,14 @@ int SDL_main(int argc, char *args[]){
 		SDL_RenderClear(renderer);
 		
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // set drawing color to white
-		grid_draw(20, 10, mainGrid, renderer);
+		grid_draw(ROWS, COLS, mainGrid, renderer);
 
 		SDL_RenderPresent(renderer);
 
 		lastTime = time;
 	}
 
-	grid_destroy(20, mainGrid);
+	grid_destroy(ROWS, mainGrid);
 
 	return 0;
 }
