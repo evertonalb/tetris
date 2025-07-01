@@ -98,6 +98,14 @@ bool is_cell_within_bounds(int rows, int cols, Cell cell){
 	return (rowIsContained && colIsContained);
 }
 
+bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino){
+	for (int i = 0; i < 4; i++){
+		if (!is_cell_within_bounds(rows, cols, tetromino.cells[i]))
+			return false;
+	}
+	return true;
+}
+
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]){
 	for (int i = 0; i < 4; i++){
 		Cell cur = tetromino.cells[i];

@@ -36,6 +36,8 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
 
 bool is_cell_within_bounds(int rows, int cols, Cell cell);
 
+bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino);
+
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]);
 
 // Draws a line
