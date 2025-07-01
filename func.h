@@ -69,4 +69,6 @@ void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *ren
 
 void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL_Renderer *renderer, SDL_FColor color);
 
+void on_key_press(SDL_KeyboardEvent keyboard);
+
 #endif // FUNC_H

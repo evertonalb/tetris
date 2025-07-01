@@ -220,3 +220,20 @@ void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL
 
 	SDL_RenderGeometry(renderer, NULL, vertices, 4, indices, 6);
 }
+
+void on_key_press(SDL_KeyboardEvent keyboard){
+
+	SDL_Event customEvent;
+	customEvent.type = SDL_EVENT_QUIT;
+	
+	switch (keyboard.key){
+	case SDLK_ESCAPE:
+		SDL_PushEvent(&customEvent);
+		break;
+	
+	default:
+		break;
+	}
+}
+
+// Key presses
