@@ -20,10 +20,17 @@ int SDL_main(int argc, char *args[]){
 	SDL_FPoint botLeft = {margin, height - margin};
 	float cellSize = grid_init(20, 10, mainGrid, topLeft, botLeft);
 
+	// Time
+	SDL_Time time, lastTime, delta;
+
 	// Game loop
 	SDL_Event event;
 	bool running = true;
+	SDL_GetCurrentTime(&lastTime);
 	while (running){
+		SDL_GetCurrentTime(&time);
+		delta = time - lastTime;
+
 		// Event handling
 		while (SDL_PollEvent(&event)){
 			switch (event.type){
@@ -49,6 +56,8 @@ int SDL_main(int argc, char *args[]){
 		grid_draw(20, 10, mainGrid, renderer);
 
 		SDL_RenderPresent(renderer);
+
+		lastTime = time;
 	}
 
 	grid_destroy(20, mainGrid);
