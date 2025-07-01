@@ -106,7 +106,36 @@ bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino){
 	return true;
 }
 
-void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]){
+void move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction){
+	int di = 0, dj = 0;
+
+	Tetromino copy = *tetromino;
+
+	switch (direction){
+	case RIGHT:
+		dj = 1;
+		break;
+	case LEFT:
+		dj = -1;
+		break;
+	case DOWN:
+		di = 1;
+		break;
+	}
+
+	for (int i = 0; i < 4; i++){
+		copy.cells[i].i += di;
+		copy.cells[i].j += dj;
+	}
+	
+	if (!is_tetromino_within_bounds(rows, cols, copy)) return;
+
+	*tetromino = copy;
+	
+}
+
+void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows])
+{
 	for (int i = 0; i < 4; i++){
 		Cell cur = tetromino.cells[i];
 		fill_cell(rows, cols, grid, cur.i, cur.j, renderer, tetromino.color);
