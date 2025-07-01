@@ -24,9 +24,14 @@ int SDL_main(int argc, char *args[]){
 	// Time
 	SDL_Time time, lastTime, delta;
 
+	// Setting the RNG seed
+	SDL_GetCurrentTime(&time);
+	SDL_srand(time);
+
 	// Game loop
 	SDL_Event event;
 	bool running = true;
+	Tetromino currentTetromino = random_tetromino();
 	SDL_GetCurrentTime(&lastTime);
 	while (running){
 		SDL_GetCurrentTime(&time);
@@ -53,6 +58,7 @@ int SDL_main(int argc, char *args[]){
 		
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // set drawing color to white
 		grid_draw(ROWS, COLS, mainGrid, renderer);
+		draw_tetromino(renderer, currentTetromino, ROWS, COLS, mainGrid);
 
 		SDL_RenderPresent(renderer);
 

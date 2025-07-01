@@ -92,6 +92,23 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 	return tetromino;
 }
 
+Tetromino random_tetromino(){
+
+	int randomNumber = SDL_rand(7);
+
+	SDL_FColor colors[] = {
+		{1, 1, 0, 1},
+		{0, 1, 1, 1},
+		{0, 1, 0, 0},
+		{1, 0, 0, 1},
+		{1, 0.5, 0, 1},
+		{0, 0, 1, 1},
+		{1, 0, 0, 1}
+	};
+
+	return get_tetromino(randomNumber, colors[randomNumber]);
+}
+
 bool is_cell_within_bounds(int rows, int cols, Cell cell){
 	int rowIsContained = (cell.i < rows && cell.i >= 0);
 	int colIsContained = (cell.j < cols && cell.i >= 0);

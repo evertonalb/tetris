@@ -34,6 +34,8 @@ typedef struct {
 
 Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
 
+Tetromino random_tetromino();
+
 bool is_cell_within_bounds(int rows, int cols, Cell cell);
 
 bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino);
