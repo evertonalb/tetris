@@ -111,7 +111,7 @@ Tetromino random_tetromino(){
 
 bool is_cell_within_bounds(int rows, int cols, Cell cell){
 	int rowIsContained = (cell.i < rows && cell.i >= 0);
-	int colIsContained = (cell.j < cols && cell.i >= 0);
+	int colIsContained = (cell.j < cols && cell.j >= 0);
 	return (rowIsContained && colIsContained);
 }
 
