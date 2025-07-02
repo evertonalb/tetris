@@ -21,6 +21,9 @@ int SDL_main(int argc, char *args[]){
 	const int ROWS = 20, COLS = 10;
 	float cellSize = grid_init(ROWS, COLS, mainGrid, topLeft, botLeft);
 
+	// Registering events
+	SDL_RegisterEvents(1);
+
 	// Time
 	SDL_Time time, lastTime, delta;
 
@@ -45,7 +48,10 @@ int SDL_main(int argc, char *args[]){
 				break;
 			case SDL_EVENT_QUIT:
 				running = false;
-				break;	
+				break;
+			case EVENT_MOVEMENT:
+				SDL_UserEvent movementEvent = event.user;
+				move_tetromino(ROWS, COLS, &currentTetromino, movementEvent.code);
 			default:
 				break;
 			}

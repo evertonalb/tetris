@@ -241,16 +241,27 @@ void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL
 void on_key_press(SDL_KeyboardEvent keyboard){
 
 	SDL_Event customEvent;
-	customEvent.type = SDL_EVENT_QUIT;
 	
 	switch (keyboard.key){
 	case SDLK_ESCAPE:
-		SDL_PushEvent(&customEvent);
+		customEvent.type = SDL_EVENT_QUIT;
 		break;
-	
+	case SDLK_D:
+	case SDLK_RIGHT:
+		customEvent.type = EVENT_MOVEMENT;
+		customEvent.user.code = RIGHT;
+		break;
+	case SDLK_A:
+	case SDLK_LEFT:
+		customEvent.type = EVENT_MOVEMENT;
+		customEvent.user.code = LEFT;
+		break;
 	default:
-		break;
+		return;
 	}
+	
+	SDL_PushEvent(&customEvent);
+
 }
 
 // Key presses

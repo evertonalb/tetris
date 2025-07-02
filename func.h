@@ -3,6 +3,9 @@
 
 #include <SDL3/SDL.h>
 
+// A right movement event would be EVENT_MOVEMENT + RIGHT and so on
+#define EVENT_MOVEMENT SDL_EVENT_USER
+
 typedef struct {
 	int i, j;
 } Cell;
