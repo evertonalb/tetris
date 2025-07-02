@@ -25,7 +25,7 @@ int SDL_main(int argc, char *args[]){
 	SDL_RegisterEvents(1);
 
 	// Time
-	SDL_Time time, lastTime, delta;
+	SDL_Time time, lastTime, clock = 0;
 
 	// Setting the RNG seed
 	SDL_GetCurrentTime(&time);
@@ -38,7 +38,7 @@ int SDL_main(int argc, char *args[]){
 	SDL_GetCurrentTime(&lastTime);
 	while (running){
 		SDL_GetCurrentTime(&time);
-		delta = time - lastTime;
+		clock += time - lastTime;
 
 		// Event handling
 		while (SDL_PollEvent(&event)){
@@ -55,6 +55,12 @@ int SDL_main(int argc, char *args[]){
 			default:
 				break;
 			}
+		}
+
+		// Gravity
+		if (clock > 500e6){
+			clock = 0;
+			move_tetromino(ROWS, COLS, &currentTetromino, DOWN);
 		}
 
 		// Drawing
