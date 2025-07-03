@@ -5,6 +5,8 @@
 
 // A right movement event would be EVENT_MOVEMENT + RIGHT and so on
 #define EVENT_MOVEMENT SDL_EVENT_USER
+#define EVENT_FAST_FALL_ON (SDL_EVENT_USER + 1)
+#define EVENT_FAST_FALL_OFF (SDL_EVENT_USER + 2)
 
 typedef struct {
 	int i, j;
@@ -75,5 +77,7 @@ void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *ren
 void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL_Renderer *renderer, SDL_FColor color);
 
 void on_key_press(SDL_KeyboardEvent keyboard);
+
+void on_key_release(SDL_KeyboardEvent keyboard);
 
 #endif // FUNC_H

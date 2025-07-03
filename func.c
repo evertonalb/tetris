@@ -256,6 +256,10 @@ void on_key_press(SDL_KeyboardEvent keyboard){
 		customEvent.type = EVENT_MOVEMENT;
 		customEvent.user.code = LEFT;
 		break;
+	case SDLK_S:
+	case SDLK_DOWN:
+		customEvent.type = EVENT_FAST_FALL_ON;
+		break;
 	default:
 		return;
 	}
@@ -264,4 +268,19 @@ void on_key_press(SDL_KeyboardEvent keyboard){
 
 }
 
-// Key presses
+void on_key_release(SDL_KeyboardEvent keyboard){
+
+	SDL_Event customEvent;
+	
+	switch (keyboard.key){
+	case SDLK_S:
+	case SDLK_DOWN:
+		customEvent.type = EVENT_FAST_FALL_OFF;
+		break;
+	default:
+		return;
+	}
+
+	SDL_PushEvent(&customEvent);
+
+}

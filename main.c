@@ -33,7 +33,7 @@ int SDL_main(int argc, char *args[]){
 
 	// Game loop
 	SDL_Event event;
-	bool running = true;
+	bool running = true, fastFall = false;
 	Tetromino currentTetromino = random_tetromino();
 	SDL_GetCurrentTime(&lastTime);
 	while (running){
@@ -46,21 +46,31 @@ int SDL_main(int argc, char *args[]){
 			case SDL_EVENT_KEY_DOWN:
 				on_key_press(event.key);
 				break;
+			case SDL_EVENT_KEY_UP:
+				on_key_release(event.key);
+				break;
 			case SDL_EVENT_QUIT:
 				running = false;
 				break;
 			case EVENT_MOVEMENT:
 				SDL_UserEvent movementEvent = event.user;
 				move_tetromino(ROWS, COLS, &currentTetromino, movementEvent.code);
+				break;
+			case EVENT_FAST_FALL_ON:
+				fastFall = true;
+				break;
+			case EVENT_FAST_FALL_OFF:
+				fastFall = false;
+				break;
 			default:
 				break;
 			}
 		}
 
 		// Gravity
-		if (clock > 500e6){
-			clock = 0;
+		if (clock > 500e6 || (fastFall && clock > 100e6) ){
 			move_tetromino(ROWS, COLS, &currentTetromino, DOWN);
+			clock = 0;
 		}
 
 		// Drawing
