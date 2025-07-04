@@ -26,7 +26,7 @@ int SDL_main(int argc, char *args[]){
 	bool_matrix_init(ROWS, COLS, occupied);
 
 	// Registering events
-	SDL_RegisterEvents(1);
+	SDL_RegisterEvents(4);
 
 	// Time
 	SDL_Time time, lastTime, clock = 0;
@@ -34,6 +34,9 @@ int SDL_main(int argc, char *args[]){
 	// Setting the RNG seed
 	SDL_GetCurrentTime(&time);
 	SDL_srand(time);
+
+	// Custom events
+	SDL_Event customEvent;
 
 	// Game loop
 	SDL_Event event;
@@ -66,6 +69,10 @@ int SDL_main(int argc, char *args[]){
 			case EVENT_FAST_FALL_OFF:
 				fastFall = false;
 				break;
+			case EVENT_LOCK_TETROMINO:
+				lock(currentTetromino, occupied);
+				currentTetromino = random_tetromino();
+				break;
 			default:
 				break;
 			}
@@ -73,7 +80,12 @@ int SDL_main(int argc, char *args[]){
 
 		// Gravity
 		if (clock > 500e6 || (fastFall && clock > 100e6) ){
-			move_tetromino(ROWS, COLS, &currentTetromino, DOWN);
+			bool success;
+			success = move_tetromino(ROWS, COLS, &currentTetromino, DOWN);
+			if (!success){
+				customEvent.type = EVENT_LOCK_TETROMINO;
+				SDL_PushEvent(&customEvent);
+			}
 			clock = 0;
 		}
 
@@ -85,6 +97,7 @@ int SDL_main(int argc, char *args[]){
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // set drawing color to white
 		grid_draw(ROWS, COLS, mainGrid, renderer);
 		draw_tetromino(renderer, currentTetromino, ROWS, COLS, mainGrid);
+		draw_locked_tetrominoes(renderer, ROWS, COLS, occupied, mainGrid);
 
 		SDL_RenderPresent(renderer);
 

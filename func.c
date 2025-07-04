@@ -296,3 +296,19 @@ void bool_matrix_init(int rows, int cols, bool *arr[rows]){
 void bool_matrix_destroy(int rows, bool *arr[rows]){
 	for (int i = 0; i < rows; i++) free(arr[i]);
 }
+
+void lock(Tetromino tetromino, bool *occupied[]){
+	Cell currentCell;
+	for (int i = 0; i < 4; i++){
+		currentCell = tetromino.cells[i];
+		occupied[currentCell.i][currentCell.j] = true;
+	}
+}
+
+void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *occupied[rows], SDL_FPoint *grid[rows + 1]){
+	SDL_FColor white = {1, 1, 1, 1};
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++)
+			if (occupied[i][j]) fill_cell(rows, cols, grid, i, j, renderer, white);
+	}
+}

@@ -7,6 +7,7 @@
 #define EVENT_MOVEMENT SDL_EVENT_USER
 #define EVENT_FAST_FALL_ON (SDL_EVENT_USER + 1)
 #define EVENT_FAST_FALL_OFF (SDL_EVENT_USER + 2)
+#define EVENT_LOCK_TETROMINO (SDL_EVENT_USER + 3)
 
 typedef struct {
 	int i, j;
@@ -85,5 +86,9 @@ void on_key_release(SDL_KeyboardEvent keyboard);
 void bool_matrix_init(int rows, int cols, bool *arr[rows+1]);
 
 void bool_matrix_destroy(int rows, bool *arr[rows]);
+
+void lock(Tetromino tetromino, bool *occupied[]);
+
+void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *occupied[rows], SDL_FPoint *grid[rows+1]);
 
 #endif // FUNC_H
