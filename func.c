@@ -123,7 +123,7 @@ bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino){
 	return true;
 }
 
-bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction){
+bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction, bool *occupied[]){
 	int di = 0, dj = 0;
 
 	Tetromino copy = *tetromino;
@@ -145,7 +145,7 @@ bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction directio
 		copy.cells[i].j += dj;
 	}
 	
-	if (!is_tetromino_within_bounds(rows, cols, copy)) return false;
+	if (!is_tetromino_within_bounds(rows, cols, copy) || is_overlapping(copy, occupied)) return false;
 
 	*tetromino = copy;
 	return true;
@@ -311,4 +311,13 @@ void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *o
 		for (int j = 0; j < cols; j++)
 			if (occupied[i][j]) fill_cell(rows, cols, grid, i, j, renderer, white);
 	}
+}
+
+bool is_overlapping(Tetromino tetromino, bool *occupied[]){
+	Cell currentCell;
+	for (int i = 0; i < 4; i++){
+		currentCell = tetromino.cells[i];
+		if (occupied[currentCell.i][currentCell.j]) return true;
+	}
+	return false;
 }

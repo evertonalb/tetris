@@ -61,7 +61,7 @@ int SDL_main(int argc, char *args[]){
 				break;
 			case EVENT_MOVEMENT:
 				SDL_UserEvent movementEvent = event.user;
-				move_tetromino(ROWS, COLS, &currentTetromino, movementEvent.code);
+				move_tetromino(ROWS, COLS, &currentTetromino, movementEvent.code, occupied);
 				break;
 			case EVENT_FAST_FALL_ON:
 				fastFall = true;
@@ -81,7 +81,7 @@ int SDL_main(int argc, char *args[]){
 		// Gravity
 		if (clock > 500e6 || (fastFall && clock > 100e6) ){
 			bool success;
-			success = move_tetromino(ROWS, COLS, &currentTetromino, DOWN);
+			success = move_tetromino(ROWS, COLS, &currentTetromino, DOWN, occupied);
 			if (!success){
 				customEvent.type = EVENT_LOCK_TETROMINO;
 				SDL_PushEvent(&customEvent);

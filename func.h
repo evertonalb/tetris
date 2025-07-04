@@ -48,7 +48,7 @@ bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino);
 
 typedef enum {RIGHT, LEFT, DOWN} Direction;
 
-bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction);
+bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction, bool *occupied[]);
 
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]);
 
@@ -90,5 +90,7 @@ void bool_matrix_destroy(int rows, bool *arr[rows]);
 void lock(Tetromino tetromino, bool *occupied[]);
 
 void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *occupied[rows], SDL_FPoint *grid[rows+1]);
+
+bool is_overlapping(Tetromino tetromino, bool *occupied[]);
 
 #endif // FUNC_H
