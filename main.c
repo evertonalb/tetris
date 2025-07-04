@@ -92,6 +92,7 @@ int SDL_main(int argc, char *args[]){
 	}
 
 	grid_destroy(ROWS, mainGrid);
+	bool_matrix_destroy(ROWS, occupied);
 
 	return 0;
 }

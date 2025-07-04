@@ -84,4 +84,6 @@ void on_key_release(SDL_KeyboardEvent keyboard);
 
 void bool_matrix_init(int rows, int cols, bool *arr[rows+1]);
 
+void bool_matrix_destroy(int rows, bool *arr[rows]);
+
 #endif // FUNC_H
