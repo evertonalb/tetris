@@ -284,3 +284,15 @@ void on_key_release(SDL_KeyboardEvent keyboard){
 	SDL_PushEvent(&customEvent);
 
 }
+
+void bool_matrix_init(int rows, int cols, bool *arr[rows]){
+	for (int i = 0; i < rows; i++){
+		arr[i] = (bool *) malloc (sizeof(bool) * cols);
+		for (int j = 0; j < cols; j++)
+			arr[i][j] = false;
+	}
+}
+
+void bool_matrix_destroy(int rows, bool *arr[rows]){
+	for (int i = 0; i < rows; i++) free(arr[i]);
+}

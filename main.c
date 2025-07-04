@@ -15,11 +15,15 @@ int SDL_main(int argc, char *args[]){
 	SDL_Renderer *renderer = SDL_CreateRenderer(win, NULL);
 
 	// Grid
-	SDL_FPoint *mainGrid[21];
+	const int ROWS = 20, COLS = 10;
+	SDL_FPoint *mainGrid[ROWS+1];
 	SDL_FPoint topLeft = {margin, margin};
 	SDL_FPoint botLeft = {margin, height - margin};
-	const int ROWS = 20, COLS = 10;
 	float cellSize = grid_init(ROWS, COLS, mainGrid, topLeft, botLeft);
+
+	// Occupied cells
+	bool *occupied[ROWS];
+	bool_matrix_init(ROWS, COLS, occupied);
 
 	// Registering events
 	SDL_RegisterEvents(1);

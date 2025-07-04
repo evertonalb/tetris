@@ -80,4 +80,8 @@ void on_key_press(SDL_KeyboardEvent keyboard);
 
 void on_key_release(SDL_KeyboardEvent keyboard);
 
+// Occupied cells boolean matrix
+
+void bool_matrix_init(int rows, int cols, bool *arr[rows+1]);
+
 #endif // FUNC_H
