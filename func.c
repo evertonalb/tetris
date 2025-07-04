@@ -123,7 +123,7 @@ bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino){
 	return true;
 }
 
-void move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction){
+bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction){
 	int di = 0, dj = 0;
 
 	Tetromino copy = *tetromino;
@@ -145,10 +145,10 @@ void move_tetromino(int rows, int cols, Tetromino *tetromino, Direction directio
 		copy.cells[i].j += dj;
 	}
 	
-	if (!is_tetromino_within_bounds(rows, cols, copy)) return;
+	if (!is_tetromino_within_bounds(rows, cols, copy)) return false;
 
 	*tetromino = copy;
-	
+	return true;
 }
 
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows])

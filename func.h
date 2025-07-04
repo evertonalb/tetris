@@ -47,7 +47,7 @@ bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino);
 
 typedef enum {RIGHT, LEFT, DOWN} Direction;
 
-void move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction);
+bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction);
 
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]);
 
