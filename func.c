@@ -334,6 +334,9 @@ void on_key_press(SDL_KeyboardEvent keyboard){
 	case SDLK_UP:
 		customEvent.type = EVENT_ROTATE;
 		break;
+	case SDLK_SPACE:
+		customEvent.type = EVENT_INSTANT_FALL;
+		break;
 	default:
 		return;
 	}

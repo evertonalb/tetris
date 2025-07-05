@@ -10,6 +10,7 @@
 #define EVENT_LOCK_TETROMINO (SDL_EVENT_USER + 3)
 #define EVENT_GAME_OVER		 (SDL_EVENT_USER + 4)
 #define EVENT_ROTATE		 (SDL_EVENT_USER + 5)
+#define EVENT_INSTANT_FALL	 (SDL_EVENT_USER + 6)
 
 typedef struct {
 	int i, j;

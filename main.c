@@ -26,7 +26,7 @@ int SDL_main(int argc, char *args[]){
 	bool_matrix_init(ROWS, COLS, occupied);
 	
 	// Registering events
-	SDL_RegisterEvents(5);
+	SDL_RegisterEvents(6);
 	
 	// Time
 	SDL_Time time, lastTime, clock = 0;
@@ -48,7 +48,7 @@ int SDL_main(int argc, char *args[]){
 	// Game loop
 	SDL_GetCurrentTime(&lastTime);
 	SDL_Event event;
-	bool running = true, fastFall = false;
+	bool running = true, fastFall = false, instantFall = false;
 	while (running){
 		SDL_GetCurrentTime(&time);
 		clock += time - lastTime;
@@ -77,6 +77,7 @@ int SDL_main(int argc, char *args[]){
 				break;
 			case EVENT_LOCK_TETROMINO:
 				lock(currentTetromino, ROWS, COLS, occupied);
+				instantFall = false;
 				random_tetromino(&currentTetromino);
 				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
 				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
@@ -89,13 +90,16 @@ int SDL_main(int argc, char *args[]){
 			case EVENT_ROTATE:
 				rotate_tetromino(&currentTetromino, ROWS, COLS, occupied);
 				break;
+			case EVENT_INSTANT_FALL:
+				instantFall = true;
+				break;
 			default:
 				break;
 			}
 		}
 
 		// Gravity
-		if (clock > 500e6 || (fastFall && clock > 100e6) ){
+		if (instantFall || clock > 500e6 || (fastFall && clock > 100e6) ){
 			bool success;
 			success = move_tetromino(ROWS, COLS, &currentTetromino, DOWN, occupied);
 			if (!success){
