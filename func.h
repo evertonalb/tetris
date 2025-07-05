@@ -36,6 +36,7 @@ typedef struct {
 	unsigned short int maxRotations;
 	Cell cells[4];
 	Cell rotationReference;
+	int centerShift;
 } Tetromino;
 
 Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
@@ -46,7 +47,7 @@ bool is_cell_within_bounds(int rows, int cols, Cell cell);
 
 bool is_tetromino_within_bounds(int rows, int cols, Tetromino tetromino);
 
-typedef enum {RIGHT, LEFT, DOWN} Direction;
+typedef enum {RIGHT, LEFT, DOWN, UP} Direction;
 
 bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction, bool *occupied[]);
 
@@ -91,6 +92,6 @@ void lock(Tetromino tetromino, bool *occupied[]);
 
 void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *occupied[rows], SDL_FPoint *grid[rows+1]);
 
-bool is_overlapping(Tetromino tetromino, bool *occupied[]);
+bool is_overlapping(Tetromino tetromino, int rows, int cols, bool *occupied[]);
 
 #endif // FUNC_H

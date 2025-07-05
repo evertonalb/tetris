@@ -24,25 +24,29 @@ int SDL_main(int argc, char *args[]){
 	// Occupied cells
 	bool *occupied[ROWS];
 	bool_matrix_init(ROWS, COLS, occupied);
-
+	
 	// Registering events
 	SDL_RegisterEvents(4);
-
+	
 	// Time
 	SDL_Time time, lastTime, clock = 0;
-
+	
 	// Setting the RNG seed
 	SDL_GetCurrentTime(&time);
 	SDL_srand(time);
-
+	
 	// Custom events
 	SDL_Event customEvent;
-
+	
+	// First tetromino
+	Tetromino currentTetromino = random_tetromino();
+	for (int i = 0; i < currentTetromino.centerShift; i++)
+		move_tetromino(ROWS, COLS, &currentTetromino, RIGHT, occupied);
+	
 	// Game loop
+	SDL_GetCurrentTime(&lastTime);
 	SDL_Event event;
 	bool running = true, fastFall = false;
-	Tetromino currentTetromino = random_tetromino();
-	SDL_GetCurrentTime(&lastTime);
 	while (running){
 		SDL_GetCurrentTime(&time);
 		clock += time - lastTime;
@@ -72,6 +76,10 @@ int SDL_main(int argc, char *args[]){
 			case EVENT_LOCK_TETROMINO:
 				lock(currentTetromino, occupied);
 				currentTetromino = random_tetromino();
+				for (int i = 0; i < currentTetromino.centerShift; i++)
+					move_tetromino(ROWS, COLS, &currentTetromino, RIGHT, occupied);
+				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
+				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
 				break;
 			default:
 				break;

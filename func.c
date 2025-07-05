@@ -20,16 +20,20 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 
 		tetromino.maxRotations = 0;
 
+		tetromino.centerShift = 4;
+
 		break;
 	case I_TETROMINO:
 		tetromino.type = I_TETROMINO;
 
-		tetromino.cells[0] = new_cell(2, 0);
-		tetromino.cells[1] = new_cell(0, 0);
-		tetromino.cells[2] = new_cell(1, 0);
-		tetromino.cells[3] = new_cell(3, 0);
+		tetromino.cells[0] = new_cell(0, 0);
+		tetromino.cells[1] = new_cell(0, 1);
+		tetromino.cells[2] = new_cell(0, 2);
+		tetromino.cells[3] = new_cell(0, 3);
 
 		tetromino.maxRotations = 2;
+
+		tetromino.centerShift = 4;
 
 		break;
 	case S_TETROMINO:
@@ -42,6 +46,8 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 
 		tetromino.maxRotations = 2;
 
+		tetromino.centerShift = 3;
+
 		break;
 	case Z_TETROMINO:
 		tetromino.type = Z_TETROMINO;
@@ -53,35 +59,43 @@ Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
 
 		tetromino.maxRotations = 2;
 
+		tetromino.centerShift = 3;
+		
 		break;
-	case L_TETROMINO:
+		case L_TETROMINO:
 		tetromino.type = L_TETROMINO;
-		tetromino.cells[0] = new_cell(0, 0);
-		tetromino.cells[1] = new_cell(1, 0);
-		tetromino.cells[2] = new_cell(2, 0);
-		tetromino.cells[3] = new_cell(2, 1);
-
-		tetromino.maxRotations = 4;
-
-		break;
-	case J_TETROMINO:
-		tetromino.type = J_TETROMINO;
-		tetromino.cells[0] = new_cell(0, 1);
+		tetromino.cells[0] = new_cell(1, 0);
 		tetromino.cells[1] = new_cell(1, 1);
-		tetromino.cells[2] = new_cell(2, 1);
-		tetromino.cells[3] = new_cell(2, 0);
-
+		tetromino.cells[2] = new_cell(1, 2);
+		tetromino.cells[3] = new_cell(0, 2);
+		
 		tetromino.maxRotations = 4;
-
+		
+		tetromino.centerShift = 3;
+		
 		break;
-	case T_TETROMINO:
+		case J_TETROMINO:
+		tetromino.type = J_TETROMINO;
+		tetromino.cells[0] = new_cell(1, 0);
+		tetromino.cells[1] = new_cell(1, 1);
+		tetromino.cells[2] = new_cell(1, 2);
+		tetromino.cells[3] = new_cell(0, 0);
+		
+		tetromino.maxRotations = 4;
+		
+		tetromino.centerShift = 3;
+		
+		break;
+		case T_TETROMINO:
 		tetromino.type = T_TETROMINO;
 		tetromino.cells[0] = new_cell(0, 0);
 		tetromino.cells[1] = new_cell(0, 1);
 		tetromino.cells[2] = new_cell(0, 2);
 		tetromino.cells[3] = new_cell(1, 1);
-
+		
 		tetromino.maxRotations = 4;
+		
+		tetromino.centerShift = 3;
 
 		break;
 	}
@@ -103,14 +117,14 @@ Tetromino random_tetromino(){
 		{1, 0, 0, 1},
 		{1, 0.5, 0, 1},
 		{0, 0, 1, 1},
-		{1, 0, 0, 1}
+		{1, 0, 1, 1}
 	};
 
 	return get_tetromino(randomNumber, colors[randomNumber]);
 }
 
 bool is_cell_within_bounds(int rows, int cols, Cell cell){
-	int rowIsContained = (cell.i < rows && cell.i >= 0);
+	int rowIsContained = (cell.i < rows);
 	int colIsContained = (cell.j < cols && cell.j >= 0);
 	return (rowIsContained && colIsContained);
 }
@@ -138,6 +152,9 @@ bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction directio
 	case DOWN:
 		di = 1;
 		break;
+	case UP:
+		di = -1;
+		break;
 	}
 
 	for (int i = 0; i < 4; i++){
@@ -145,7 +162,7 @@ bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction directio
 		copy.cells[i].j += dj;
 	}
 	
-	if (!is_tetromino_within_bounds(rows, cols, copy) || is_overlapping(copy, occupied)) return false;
+	if (!is_tetromino_within_bounds(rows, cols, copy) || is_overlapping(copy, rows, cols, occupied)) return false;
 
 	*tetromino = copy;
 	return true;
@@ -215,6 +232,9 @@ void grid_draw(int rows, int cols, SDL_FPoint *grid[rows + 1], SDL_Renderer *ren
 }
 
 void fill_cell(int rows, int cols, SDL_FPoint *grid[rows + 1], int i, int j, SDL_Renderer *renderer, SDL_FColor color){
+	Cell c = {i, j};
+	if (i < 0 || !is_cell_within_bounds(rows, cols, c)) return;
+	
 	SDL_Vertex vertices[4];
 
 	SDL_FColor white = {1, 1, 1, 1};
@@ -313,10 +333,11 @@ void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *o
 	}
 }
 
-bool is_overlapping(Tetromino tetromino, bool *occupied[]){
+bool is_overlapping(Tetromino tetromino, int rows, int cols, bool *occupied[rows]){
 	Cell currentCell;
 	for (int i = 0; i < 4; i++){
 		currentCell = tetromino.cells[i];
+		if (currentCell.i < 0 || !is_cell_within_bounds(rows, cols, currentCell)) continue;
 		if (occupied[currentCell.i][currentCell.j]) return true;
 	}
 	return false;
