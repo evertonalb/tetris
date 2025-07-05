@@ -7,7 +7,7 @@ int SDL_main(int argc, char *args[]){
 	
 	// Window
 	const int margin = 50;
-    const int width = 850;
+    const int width = 450;
     const int height = 800;
     SDL_Window *win = SDL_CreateWindow("Tetris", width, height, SDL_WINDOW_MAXIMIZED);	
 
@@ -26,7 +26,7 @@ int SDL_main(int argc, char *args[]){
 	bool_matrix_init(ROWS, COLS, occupied);
 	
 	// Registering events
-	SDL_RegisterEvents(4);
+	SDL_RegisterEvents(5);
 	
 	// Time
 	SDL_Time time, lastTime, clock = 0;
@@ -39,7 +39,9 @@ int SDL_main(int argc, char *args[]){
 	SDL_Event customEvent;
 	
 	// First tetromino
-	Tetromino currentTetromino = random_tetromino();
+	Tetromino currentTetromino;
+	random_tetromino(&currentTetromino);
+
 	for (int i = 0; i < currentTetromino.centerShift; i++)
 		move_tetromino(ROWS, COLS, &currentTetromino, RIGHT, occupied);
 	
@@ -75,7 +77,7 @@ int SDL_main(int argc, char *args[]){
 				break;
 			case EVENT_LOCK_TETROMINO:
 				lock(currentTetromino, ROWS, COLS, occupied);
-				currentTetromino = random_tetromino();
+				random_tetromino(&currentTetromino);
 				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
 				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
 				for (int i = 0; i < currentTetromino.centerShift; i++)
@@ -83,6 +85,9 @@ int SDL_main(int argc, char *args[]){
 				break;
 			case EVENT_GAME_OVER:
 				running = false;
+				break;
+			case EVENT_ROTATE:
+				rotate_tetromino(&currentTetromino, ROWS, COLS, occupied);
 				break;
 			default:
 				break;

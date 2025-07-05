@@ -9,12 +9,20 @@
 #define EVENT_FAST_FALL_OFF	 (SDL_EVENT_USER + 2)
 #define EVENT_LOCK_TETROMINO (SDL_EVENT_USER + 3)
 #define EVENT_GAME_OVER		 (SDL_EVENT_USER + 4)
+#define EVENT_ROTATE		 (SDL_EVENT_USER + 5)
 
 typedef struct {
 	int i, j;
 } Cell;
 
 Cell new_cell(int i, int j);
+
+// Returns a - b
+Cell difference(Cell a, Cell b);
+
+Cell add(Cell a, Cell b);
+
+void rotate_cell(Cell *a, Cell reference);
 
 // Tetromino
 typedef enum {
@@ -36,13 +44,15 @@ typedef struct {
 	unsigned short int currentRotation;
 	unsigned short int maxRotations;
 	Cell cells[4];
-	Cell rotationReference;
 	int centerShift;
+	Cell *rotationReference;
+	int rotationIndex;
+	int rotationLimit;
 } Tetromino;
 
-Tetromino get_tetromino(TetrominoType type, SDL_FColor color);
+void get_tetromino(Tetromino *tetromino, TetrominoType type, SDL_FColor color);
 
-Tetromino random_tetromino();
+void random_tetromino(Tetromino *tetromino);
 
 bool is_cell_within_bounds(int rows, int cols, Cell cell);
 
@@ -53,6 +63,8 @@ typedef enum {RIGHT, LEFT, DOWN, UP} Direction;
 bool move_tetromino(int rows, int cols, Tetromino *tetromino, Direction direction, bool *occupied[]);
 
 void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int cols, SDL_FPoint *grid[rows]);
+
+void rotate_tetromino(Tetromino *tetromino, int rows, int cols, bool *occupied[rows]);
 
 // Draws a line
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);

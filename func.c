@@ -6,107 +6,139 @@ Cell new_cell(int i, int j){
 	return c;
 }
 
-Tetromino get_tetromino(TetrominoType type, SDL_FColor color){
-	Tetromino tetromino;
+Cell difference(Cell a, Cell b){
+	a.i -= b.i;
+	a.j -= b.j;
+	return a;
+}
 
+Cell add(Cell a, Cell b){
+	a.i += b.i;
+	a.j += b.j;
+	return a;
+}
+
+void rotate_cell(Cell *a, Cell reference){
+	*a = difference(*a, reference);
+	int aux;
+
+	/* Rotation matrix
+	 * [i'] = [ 0 1 ] * [i]
+	 * [j']   [-1 0 ]   [j]
+	 */
+	
+	aux = a->i;
+	a->i = a->j;
+	a->j = -aux;
+
+	*a = add(*a, reference);
+}
+
+void get_tetromino(Tetromino *tetromino, TetrominoType type, SDL_FColor color){
 	switch (type){
 	case O_TETROMINO:
-		tetromino.type = O_TETROMINO;
+		tetromino->type = O_TETROMINO;
 
-		tetromino.cells[0] = new_cell(0, 0);
-		tetromino.cells[1] = new_cell(0, 1);
-		tetromino.cells[2] = new_cell(1, 0);
-		tetromino.cells[3] = new_cell(1, 1);
+		tetromino->cells[0] = new_cell(0, 0);
+		tetromino->cells[1] = new_cell(0, 1);
+		tetromino->cells[2] = new_cell(1, 0);
+		tetromino->cells[3] = new_cell(1, 1);
 
-		tetromino.maxRotations = 0;
-
-		tetromino.centerShift = 4;
+		tetromino->maxRotations = 0;
+		tetromino->centerShift = 4;
+		tetromino->rotationReference = &tetromino->cells[0];
+		tetromino->rotationLimit = 0;
 
 		break;
 	case I_TETROMINO:
-		tetromino.type = I_TETROMINO;
+		tetromino->type = I_TETROMINO;
 
-		tetromino.cells[0] = new_cell(0, 0);
-		tetromino.cells[1] = new_cell(0, 1);
-		tetromino.cells[2] = new_cell(0, 2);
-		tetromino.cells[3] = new_cell(0, 3);
+		tetromino->cells[0] = new_cell(0, 0);
+		tetromino->cells[1] = new_cell(0, 1);
+		tetromino->cells[2] = new_cell(0, 2);
+		tetromino->cells[3] = new_cell(0, 3);
 
-		tetromino.maxRotations = 2;
-
-		tetromino.centerShift = 4;
+		tetromino->maxRotations = 2;
+		tetromino->centerShift = 3;
+		tetromino->rotationReference = &tetromino->cells[1];
+		tetromino->rotationLimit = 1;
 
 		break;
 	case S_TETROMINO:
-		tetromino.type = S_TETROMINO;
+		tetromino->type = S_TETROMINO;
 
-		tetromino.cells[0] = new_cell(0, 1);
-		tetromino.cells[1] = new_cell(0, 2);
-		tetromino.cells[2] = new_cell(1, 0);
-		tetromino.cells[3] = new_cell(1, 1);
+		tetromino->cells[0] = new_cell(0, 1);
+		tetromino->cells[1] = new_cell(0, 2);
+		tetromino->cells[2] = new_cell(1, 0);
+		tetromino->cells[3] = new_cell(1, 1);
 
-		tetromino.maxRotations = 2;
-
-		tetromino.centerShift = 3;
+		tetromino->maxRotations = 2;
+		tetromino->centerShift = 3;
+		tetromino->rotationReference = &tetromino->cells[3];
+		tetromino->rotationLimit = 1;
 
 		break;
 	case Z_TETROMINO:
-		tetromino.type = Z_TETROMINO;
+		tetromino->type = Z_TETROMINO;
 
-		tetromino.cells[0] = new_cell(0, 0);
-		tetromino.cells[1] = new_cell(0, 1);
-		tetromino.cells[2] = new_cell(1, 1);
-		tetromino.cells[3] = new_cell(1, 2);
+		tetromino->cells[0] = new_cell(0, 0);
+		tetromino->cells[1] = new_cell(0, 1);
+		tetromino->cells[2] = new_cell(1, 1);
+		tetromino->cells[3] = new_cell(1, 2);
 
-		tetromino.maxRotations = 2;
-
-		tetromino.centerShift = 3;
+		tetromino->maxRotations = 2;
+		tetromino->centerShift = 3;
+		tetromino->rotationReference = &tetromino->cells[2];
+		tetromino->rotationLimit = 1;
 		
 		break;
 		case L_TETROMINO:
-		tetromino.type = L_TETROMINO;
-		tetromino.cells[0] = new_cell(1, 0);
-		tetromino.cells[1] = new_cell(1, 1);
-		tetromino.cells[2] = new_cell(1, 2);
-		tetromino.cells[3] = new_cell(0, 2);
+		tetromino->type = L_TETROMINO;
+		tetromino->cells[0] = new_cell(1, 0);
+		tetromino->cells[1] = new_cell(1, 1);
+		tetromino->cells[2] = new_cell(1, 2);
+		tetromino->cells[3] = new_cell(0, 2);
 		
-		tetromino.maxRotations = 4;
-		
-		tetromino.centerShift = 3;
+		tetromino->maxRotations = 4;
+		tetromino->centerShift = 3;
+		tetromino->rotationReference = &tetromino->cells[2];
+		tetromino->rotationLimit = 3;
 		
 		break;
 		case J_TETROMINO:
-		tetromino.type = J_TETROMINO;
-		tetromino.cells[0] = new_cell(1, 0);
-		tetromino.cells[1] = new_cell(1, 1);
-		tetromino.cells[2] = new_cell(1, 2);
-		tetromino.cells[3] = new_cell(0, 0);
+		tetromino->type = J_TETROMINO;
+		tetromino->cells[0] = new_cell(1, 0);
+		tetromino->cells[1] = new_cell(1, 1);
+		tetromino->cells[2] = new_cell(1, 2);
+		tetromino->cells[3] = new_cell(0, 0);
 		
-		tetromino.maxRotations = 4;
-		
-		tetromino.centerShift = 3;
+		tetromino->maxRotations = 4;
+		tetromino->centerShift = 3;
+		tetromino->rotationReference = &tetromino->cells[0];
+		tetromino->rotationLimit = 3;
 		
 		break;
 		case T_TETROMINO:
-		tetromino.type = T_TETROMINO;
-		tetromino.cells[0] = new_cell(0, 0);
-		tetromino.cells[1] = new_cell(0, 1);
-		tetromino.cells[2] = new_cell(0, 2);
-		tetromino.cells[3] = new_cell(1, 1);
+		tetromino->type = T_TETROMINO;
+		tetromino->cells[0] = new_cell(0, 0);
+		tetromino->cells[1] = new_cell(0, 1);
+		tetromino->cells[2] = new_cell(0, 2);
+		tetromino->cells[3] = new_cell(1, 1);
 		
-		tetromino.maxRotations = 4;
-		
-		tetromino.centerShift = 3;
+		tetromino->maxRotations = 4;
+		tetromino->centerShift = 3;
+		tetromino->rotationReference = &tetromino->cells[1];
+		tetromino->rotationLimit = 3;
 
 		break;
 	}
 
-	tetromino.currentRotation = 0;
-	tetromino.color = color;
-
-	return tetromino;
+	tetromino->currentRotation = 0;
+	tetromino->color = color;
+	tetromino->rotationIndex = 0;
 }
 
-Tetromino random_tetromino(){
+void random_tetromino(Tetromino *tetromino){
 
 	int randomNumber = SDL_rand(7);
 
@@ -120,7 +152,7 @@ Tetromino random_tetromino(){
 		{1, 0, 1, 1}
 	};
 
-	return get_tetromino(randomNumber, colors[randomNumber]);
+	return get_tetromino(tetromino, randomNumber, colors[randomNumber]);
 }
 
 bool is_cell_within_bounds(int rows, int cols, Cell cell){
@@ -174,6 +206,24 @@ void draw_tetromino(SDL_Renderer *renderer, Tetromino tetromino, int rows, int c
 		Cell cur = tetromino.cells[i];
 		fill_cell(rows, cols, grid, cur.i, cur.j, renderer, tetromino.color);
 	}
+}
+
+void rotate_tetromino(Tetromino *tetromino, int rows, int cols, bool *occupied[rows]){
+	Tetromino copy = *tetromino;
+	Cell *currentCell;
+	for (int i = 0; i < 4; i++){
+		currentCell = &copy.cells[i];
+		rotate_cell(currentCell, *copy.rotationReference);
+	}
+
+	if (is_overlapping(copy, rows, cols, occupied) || !is_tetromino_within_bounds(rows, cols, copy)) return;
+
+	*tetromino = copy;
+
+	tetromino->rotationIndex++;
+	tetromino->rotationIndex %= 4;
+
+	if (tetromino->rotationIndex > tetromino->rotationLimit) rotate_tetromino(tetromino, rows, cols, occupied);
 }
 
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end) { SDL_RenderLine(renderer, start.x, start.y, end.x, end.y); }
@@ -279,6 +329,10 @@ void on_key_press(SDL_KeyboardEvent keyboard){
 	case SDLK_S:
 	case SDLK_DOWN:
 		customEvent.type = EVENT_FAST_FALL_ON;
+		break;
+	case SDLK_W:
+	case SDLK_UP:
+		customEvent.type = EVENT_ROTATE;
 		break;
 	default:
 		return;
