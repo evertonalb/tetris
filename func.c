@@ -317,10 +317,17 @@ void bool_matrix_destroy(int rows, bool *arr[rows]){
 	for (int i = 0; i < rows; i++) free(arr[i]);
 }
 
-void lock(Tetromino tetromino, bool *occupied[]){
+void lock(Tetromino tetromino, int rows, int cols, bool *occupied[rows]){
 	Cell currentCell;
+	SDL_Event gameOver;
+	gameOver.type = EVENT_GAME_OVER;
+
 	for (int i = 0; i < 4; i++){
 		currentCell = tetromino.cells[i];
+		if (currentCell.i < 0){
+			SDL_PushEvent(&gameOver);
+			return;
+		}
 		occupied[currentCell.i][currentCell.j] = true;
 	}
 }

@@ -4,10 +4,11 @@
 #include <SDL3/SDL.h>
 
 // A right movement event would be EVENT_MOVEMENT + RIGHT and so on
-#define EVENT_MOVEMENT SDL_EVENT_USER
-#define EVENT_FAST_FALL_ON (SDL_EVENT_USER + 1)
-#define EVENT_FAST_FALL_OFF (SDL_EVENT_USER + 2)
+#define EVENT_MOVEMENT 		  SDL_EVENT_USER
+#define EVENT_FAST_FALL_ON	 (SDL_EVENT_USER + 1)
+#define EVENT_FAST_FALL_OFF	 (SDL_EVENT_USER + 2)
 #define EVENT_LOCK_TETROMINO (SDL_EVENT_USER + 3)
+#define EVENT_GAME_OVER		 (SDL_EVENT_USER + 4)
 
 typedef struct {
 	int i, j;
@@ -88,7 +89,7 @@ void bool_matrix_init(int rows, int cols, bool *arr[rows+1]);
 
 void bool_matrix_destroy(int rows, bool *arr[rows]);
 
-void lock(Tetromino tetromino, bool *occupied[]);
+void lock(Tetromino tetromino, int rows, int cols, bool *occupied[rows]);
 
 void draw_locked_tetrominoes(SDL_Renderer *renderer, int rows, int cols, bool *occupied[rows], SDL_FPoint *grid[rows+1]);
 

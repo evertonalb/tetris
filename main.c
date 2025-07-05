@@ -74,12 +74,15 @@ int SDL_main(int argc, char *args[]){
 				fastFall = false;
 				break;
 			case EVENT_LOCK_TETROMINO:
-				lock(currentTetromino, occupied);
+				lock(currentTetromino, ROWS, COLS, occupied);
 				currentTetromino = random_tetromino();
+				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
+				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
 				for (int i = 0; i < currentTetromino.centerShift; i++)
 					move_tetromino(ROWS, COLS, &currentTetromino, RIGHT, occupied);
-				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
-				move_tetromino(ROWS, COLS, &currentTetromino, UP, occupied);
+				break;
+			case EVENT_GAME_OVER:
+				running = false;
 				break;
 			default:
 				break;
