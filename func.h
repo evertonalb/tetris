@@ -72,17 +72,6 @@ void rotate_tetromino(Tetromino *tetromino, int rows, int cols, bool *occupied[r
 // Draws a line
 void draw_line(SDL_Renderer *renderer, SDL_FPoint start, SDL_FPoint end);
 
-// Polygon
-typedef struct {
-	int numVertices, numIndices;
-	SDL_Vertex *vertices;
-	int *indices;
-} Polygon;
-
-void polygon_init(Polygon *poly, int n);
-
-void polygon_destroy(Polygon *poly);
-
 // Grid
 
 // Returns cell size
