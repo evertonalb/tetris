@@ -1,9 +1,11 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include "func.h"
 
 int SDL_main(int argc, char *args[]){
 	SDL_Init(SDL_INIT_VIDEO);
+	TTF_Init();
 	
 	// Window
 	const int margin = 50;
@@ -13,6 +15,12 @@ int SDL_main(int argc, char *args[]){
 
 	// Renderer
 	SDL_Renderer *renderer = SDL_CreateRenderer(win, NULL);
+
+	// Text settings
+	TTF_Font *font = TTF_OpenFont("assets/times.ttf", 30.0f);
+	SDL_Surface *text = NULL;
+	SDL_Texture *texture = NULL;
+	SDL_FRect textArea;
 
 	// Grid
 	const int ROWS = 20, COLS = 10;
@@ -54,7 +62,12 @@ int SDL_main(int argc, char *args[]){
 	SDL_GetCurrentTime(&lastTime);
 	SDL_Event event;
 	bool running = true, fastFall = false, instantFall = false, clearingRow = false;
+	int score = 0, scoreLength;
+	char *scoreText = NULL;
+	SDL_Color white = {255, 255, 255, 255};
 	while (running){
+		SDL_free(scoreText);
+		scoreLength = SDL_asprintf(&scoreText, "Score: %d", score);
 		SDL_GetCurrentTime(&time);
 		clock += time - lastTime;
 
@@ -81,6 +94,7 @@ int SDL_main(int argc, char *args[]){
 				fastFall = false;
 				break;
 			case EVENT_LOCK_TETROMINO:
+				score += 100; 
 				lock(currentTetromino, ROWS, COLS, occupied);
 				instantFall = false;
 				random_tetromino(&currentTetromino);
@@ -90,6 +104,7 @@ int SDL_main(int argc, char *args[]){
 					move_tetromino(ROWS, COLS, &currentTetromino, RIGHT, occupied);
 				break;
 			case EVENT_GAME_OVER:
+				score -= 100;
 				running = false;
 				break;
 			case EVENT_ROTATE:
@@ -116,6 +131,7 @@ int SDL_main(int argc, char *args[]){
 
 				break;
 			case EVENT_CLEARING_FINISHED:
+				score += 1000;
 				clearingCount = 0;
 				clearingRow = false;
 				clear_row(event.user.code, ROWS, COLS, occupied);
@@ -142,9 +158,15 @@ int SDL_main(int argc, char *args[]){
 		}
 
 		// Drawing
-		
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // set background color to black
 		SDL_RenderClear(renderer);
+		
+		text = TTF_RenderText_Blended(font, scoreText, scoreLength, white);
+		texture = SDL_CreateTextureFromSurface(renderer, text);
+		SDL_GetTextureSize(texture, &textArea.w, &textArea.h);
+		textArea.x = margin;
+		textArea.y = margin - textArea.h;
+		SDL_RenderTexture(renderer, texture, NULL, &textArea);
 
 		if (clearingRow){
 			Cell c;
@@ -164,10 +186,15 @@ int SDL_main(int argc, char *args[]){
 		SDL_RenderPresent(renderer);
 
 		lastTime = time;
+		SDL_DestroySurface(text);
+		SDL_DestroyTexture(texture);
 	}
 
 	grid_destroy(ROWS, mainGrid);
 	bool_matrix_destroy(ROWS, occupied);
+	TTF_CloseFont(font);
+	TTF_Quit();
+	SDL_Quit();
 
 	return 0;
 }
