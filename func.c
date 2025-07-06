@@ -406,3 +406,32 @@ bool is_overlapping(Tetromino tetromino, int rows, int cols, bool *occupied[rows
 	}
 	return false;
 }
+
+void clear_rows(int rows, int cols, bool *occupied[rows], SDL_FPoint *grid[rows + 1], SDL_Renderer *renderer){
+	bool rowIsClear;
+	SDL_Event clear;
+	clear.type = EVENT_CLEARING_ROW; 
+	
+	for (int i = rows-1; i >= 0; i--){
+		rowIsClear = true;
+		for (int j = 0; j < cols; j++){
+			if (!occupied[i][j]){
+				rowIsClear = false;
+				break;
+			}
+		}
+
+		clear.user.code = i;
+		clear.user.reserved = 0;
+		if (rowIsClear){
+			SDL_PushEvent(&clear);
+			return;
+		}
+	}
+}
+
+void clear_row(int i, int rows, int cols, bool *occupied[rows]){
+	for (; i > 0; i--)
+		for (int j = 0; j < cols; j++)
+			occupied[i][j] = occupied[i-1][j];
+}

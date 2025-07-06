@@ -37,6 +37,11 @@ int SDL_main(int argc, char *args[]){
 	
 	// Custom events
 	SDL_Event customEvent;
+
+	// Clearing
+	Cell clearingQueue[COLS];
+	SDL_FColor clearingColor = {0.5, 0.5, 0.5, 1.0};
+	int clearingCount = 0;
 	
 	// First tetromino
 	Tetromino currentTetromino;
@@ -48,7 +53,7 @@ int SDL_main(int argc, char *args[]){
 	// Game loop
 	SDL_GetCurrentTime(&lastTime);
 	SDL_Event event;
-	bool running = true, fastFall = false, instantFall = false;
+	bool running = true, fastFall = false, instantFall = false, clearingRow = false;
 	while (running){
 		SDL_GetCurrentTime(&time);
 		clock += time - lastTime;
@@ -93,28 +98,65 @@ int SDL_main(int argc, char *args[]){
 			case EVENT_INSTANT_FALL:
 				instantFall = true;
 				break;
+			case EVENT_CLEARING_ROW:
+				clearingRow = true;
+				Cell c = {event.user.code, event.user.reserved};
+				SDL_FColor grey = {0.5, 0.5, 0.5, 1.0};
+				
+				clearingQueue[clearingCount++] = c;
+				
+				occupied[c.i][c.j] = false;
+				event.user.reserved++;
+				if (event.user.reserved >= COLS) {
+					event.user.type = EVENT_CLEARING_FINISHED;
+					event.user.code = c.i;
+				}
+
+				SDL_PushEvent(&event);
+
+				break;
+			case EVENT_CLEARING_FINISHED:
+				clearingCount = 0;
+				clearingRow = false;
+				clear_row(event.user.code, ROWS, COLS, occupied);
+				clock = 0;
+				break;
 			default:
 				break;
 			}
 		}
 
-		// Gravity
-		if (instantFall || clock > 500e6 || (fastFall && clock > 100e6) ){
-			bool success;
-			success = move_tetromino(ROWS, COLS, &currentTetromino, DOWN, occupied);
-			if (!success){
-				customEvent.type = EVENT_LOCK_TETROMINO;
-				SDL_PushEvent(&customEvent);
+		if (!clearingRow) {
+			// Gravity
+			if (instantFall || clock > 500e6 || (fastFall && clock > 100e6) ){
+				bool success;
+				success = move_tetromino(ROWS, COLS, &currentTetromino, DOWN, occupied);
+				if (!success){
+					customEvent.type = EVENT_LOCK_TETROMINO;
+					SDL_PushEvent(&customEvent);
+				}
+				clock = 0;
 			}
-			clock = 0;
+
+			clear_rows(ROWS, COLS, occupied, mainGrid, renderer);
 		}
 
 		// Drawing
 		
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // set background color to black
 		SDL_RenderClear(renderer);
+
+		if (clearingRow){
+			Cell c;
+			for (int i = 0; i < clearingCount; i++){
+				c = clearingQueue[i];
+				fill_cell(ROWS, COLS, mainGrid, c.i, c.j, renderer, clearingColor);
+			}
+			SDL_Delay(50);
+		}
 		
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // set drawing color to white
+		
 		grid_draw(ROWS, COLS, mainGrid, renderer);
 		draw_tetromino(renderer, currentTetromino, ROWS, COLS, mainGrid);
 		draw_locked_tetrominoes(renderer, ROWS, COLS, occupied, mainGrid);
